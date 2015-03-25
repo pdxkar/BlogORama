@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="windows-1252"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context-3.0.xsd
+       http://www.springframework.org/schema/mvc
+       http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+       http://www.springframework.org/schema/aop
+       http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+       http://www.springframework.org/schema/tx
+       http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
+ 
+  <!-- Use @Component annotations for bean definitions -->
+
+  <context:component-scan base-package="com.blogOrama.controller" scoped-proxy="targetClass"/>
+
+  <!-- Use @Controller annotations for MVC controller definitions -->
+  <mvc:annotation-driven />
+  
+  <!-- resources exclusions from servlet mapping -->
+<!-- The below does not seem to work or be necessary, but I'm keeping it here just in case. -->
+<!--    	<mvc:resources mapping="/assets/**" location="../assets/" order="-1"/>     -->
+ 		
+<!-- Ref: http://static.springsource.org/spring/docs/2.5.x/reference/metadata.html#metadata-annotations-required -->
+	<bean
+		class="org.springframework.beans.factory.annotation.RequiredAnnotationBeanPostProcessor" />
+	
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+<!-- This works with the postgres DB -->   
+
+ 		<property name="driverClassName" value="org.postgresql.Driver"/>
+     <property name="url" value="jdbc:postgresql://localhost:5432/books"/>   <!-- This points to the laptop's DB (localhost) -->
+ <!--   <property name="url" value="jdbc:postgresql://192.168.0.51:5432/books"/> -->   <!-- Catalyst: This points to the laptop's DB when the laptop is at Catalyst -->
+ <!--        <property name="url" value="jdbc:postgresql://192.168.1.7:5432/books"/>  -->  <!-- Beaverton: This points to the laptop's DB when the laptop is at the Beaverton house -->
+ <!--        <property name="url" value="jdbc:postgresql://192.168.1.103:5432/books"/> -->  <!-- Sellwood: This points to the laptop's DB when the laptop is at the Sellwood house -->
+        
+ 		<property name="username" value="postgres"/>
+        <property name="password" value="postgres"/>
+        
+    </bean>
+    
+    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.simple.SimpleJdbcTemplate"> 
+    	<constructor-arg ref="dataSource" />
+	</bean>
+	
+		<bean id="namedJdbcTemplate" class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate"> 
+    	<constructor-arg ref="dataSource" />
+	</bean>
+
+<!-- 	<bean id="jdbcComponentDao" class="com.books.dao.JdbcComponentDao">
+	<property name="dataSource" ref="dataSource" />
+	</bean>  -->
+  
+  <!-- Use @Transaction annotations for managing transactions -->
+  <tx:annotation-driven transaction-manager="myTxManager" />
+
+  <!-- View resolver -->
+<bean id="viewResolver" class="org.springframework.web.servlet.view.UrlBasedViewResolver">      
+         <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+        <!--  <property name="suffix" value=".jsp"/> -->
+        <property name="suffix" value=".jsp"/> 
+         <property name="prefix" value="/WEB-INF/"/>
+    </bean>    
+</beans>
