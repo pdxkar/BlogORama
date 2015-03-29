@@ -9,20 +9,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Order(value = Ordered.LOWEST_PRECEDENCE)
 public class ShellController {
 
-	@RequestMapping("/**/*")
-	public String getPathedShell() {
-		System.out.println("ShellController GET /**/*");
-		//shell = webapp/WEB-INF/shell.jsp
-		//return "shell";
-		return "index";
-	}
+//	@RequestMapping("/**/*")
+//	public String getPathedShell() {
+//		System.out.println("ShellController GET /**/*");
+//		//shell = webapp/WEB-INF/shell.jsp
+//		//return "shell";
+//		return "index";
+//	}
 	
 	@RequestMapping("/")
 	public String getRootShell() {
 		System.out.println("ShellController GET /");
 		//shell = webapp/WEB-INF/shell.jsp
 		//return "shell";
-		return "index";
+		//return "index";
+		return "index.html";
 	}
 	
 /*	@RequestMapping("/*")
