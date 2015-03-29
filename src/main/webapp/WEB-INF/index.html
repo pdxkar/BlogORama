@@ -28,7 +28,8 @@ var routeApp = angular.module('myApp', ['ngRoute']);
 routeApp.config(function($routeProvider) {
     $routeProvider
         .when('/', {
-            templateUrl: __appContext__ + '/assets/partials/task.html'
+            /* templateUrl: __appContext__ + '/assets/partials/task.html' */  
+            templateUrl: 'getServlxtContext().getContextPath()' + '/assets/partials/task.html'
         })
         .when('/technology', {
             templateUrl: 'technology.html'
